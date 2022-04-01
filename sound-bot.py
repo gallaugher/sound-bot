@@ -1,11 +1,9 @@
-# control-pibot.py
+# sound-bot.py
 # *** IMPORTANT ***
-# serverAddress is your pi's host name. Be sure to replace hostname, below
-# with the hostname that you use to log into your Pi.
-# If you are running this code from the BostonCollege network, remove .local below
-# but REMEMBER if you run this on another Wi-Fi network (e.g. at home), you'll need
-# to modify this code to add .local again
-serverAddress = "profg-physcomp"
+# serverAddress can also be your Pi's hostname, but since this
+# program is running on the same Pi as the Mosquitto server, you
+# can use "localhost", as shown below.
+serverAddress = "localhost"
 
 # *** IMPORTANT ***
 # The commands below assume your pi's hostname is hostname. If you have a
@@ -18,6 +16,8 @@ serverAddress = "profg-physcomp"
 # mosquitto_pub -h hostname.local -t "pibot/move" -m "forward"
 # To stop the robot:
 # mosquitto_pub -h hostname.local -t "pibot/move" -m "stop"
+# NOTE: If you're logging into the same pi that has your mosquitto broker, then
+# you can also substitute "localhost" for "hostname.local"
 
 import pygame
 import time
@@ -51,14 +51,19 @@ def messageDecoder(client, userdata, msg):
     message = msg.payload.decode(encoding='UTF-8')
 
     if message == "forward":
-        print("^^^ moving forward! ^^^")
+        # code to respond to up button
+        print("^ forward ^")
     elif message == "stop":
-        print("!!! stopping!")
+        # code to run when a direction button is released
+        print("- STOP -")
     elif message == "backward":
+        # code to respond to down button
         print("\/ backward \/")
     elif message == "left":
+        # code to respond to left button
         print("<- left")
     elif message == "right":
+        # code to respond to right button
         print("-> right")
     elif message.startswith("Vol="):
         speakerVolume = message[4:]
